@@ -1,8 +1,9 @@
 import { type JSX, type ReactNode } from 'react';
+import './button.css';
 
 type Props = {
   text?: string;
-  color: string;
+  variant?: 'primary' | 'secondary' | 'accent';
   disabled?: boolean;
   icon?: string;
   onClick?: () => void;
@@ -12,7 +13,7 @@ type Props = {
 
 export function Button({
   text,
-  color,
+  variant = 'primary',
   disabled,
   icon,
   onClick,
@@ -20,16 +21,15 @@ export function Button({
   children,
 }: Props): JSX.Element {
   return (
-    <div onClick={onClick}>
-      <button
-        type={type}
-        style={{ backgroundColor: `${color}` }}
-        disabled={disabled}
-      >
-        {icon && <img src={icon} width={20} />}
-        {text}
-        {children}
-      </button>
-    </div>
+    <button
+      className={`button ${variant}`}
+      type={type}
+      disabled={disabled}
+      onClick={onClick}
+    >
+      {icon && <img src={icon} width={20} alt="" />}
+      {text}
+      {children}
+    </button>
   );
 }

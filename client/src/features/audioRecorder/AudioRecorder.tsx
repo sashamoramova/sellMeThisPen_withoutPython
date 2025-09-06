@@ -12,7 +12,7 @@ const AudioRecorder: React.FC = () => {
 
   useEffect(() => {
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      alert('Ваш браузер не поддерживает Web Speech API. Используйте Chrome или Edge.');
+      alert('Your browser does not support Web Speech API. Please use Chrome or Edge.');
       return;
     }
 
@@ -98,32 +98,56 @@ const AudioRecorder: React.FC = () => {
   };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 12, alignItems: 'flex-start', minWidth: 350 }}>
-      <div style={{ display: 'flex', gap: 8, alignItems: 'center', minHeight: 48 }}>
-        <Button onClick={startRecording} disabled={recording} color="#4f8cff" type="button">Start</Button>
-        <Button onClick={stopRecording} disabled={!recording} color="#ff4f4f" type="button">Stop</Button>
-        <Button onClick={handleTranslate} disabled={!transcript || loading} color="#ffc94f" type="button">Translate</Button>
-        <span style={{ color: recording ? 'red' : 'transparent', fontWeight: 700, marginLeft: 8, transition: 'color 0.2s', minWidth: 90 }}>
-          ● Recording...
+    <div className="recorder-container">
+      <div className="button-group">
+        <Button 
+          onClick={startRecording} 
+          disabled={recording} 
+          variant="primary" 
+          type="button"
+        >
+          Start Recording
+        </Button>
+        <Button 
+          onClick={stopRecording} 
+          disabled={!recording} 
+          variant="secondary" 
+          type="button"
+        >
+          Stop
+        </Button>
+        <Button 
+          onClick={handleTranslate} 
+          disabled={!transcript || loading} 
+          variant="accent" 
+          type="button"
+        >
+          Translate
+        </Button>
+        <span className={`recording-indicator ${recording ? 'active' : ''}`}>
+          Recording...
         </span>
       </div>
-      <div style={{ minHeight: 40, width: '100%', textAlign: 'left' }}>
-        {transcript && (
-          <div>
-            <b>Распознанный текст:</b><br/>
-            {transcript}
-          </div>
-        )}
-      </div>
-      <div style={{ minHeight: 28, width: '100%', textAlign: 'left' }}>
-        {loading && <div>Переводим...</div>}
-        {!loading && translated && (
-          <div style={{ marginTop: 8 }}>
-            <b>Перевод на испанский:</b><br/>
-            {translated}
-          </div>
-        )}
-      </div>
+
+      {transcript && (
+        <div className="text-container">
+          <h3>Recognized Text:</h3>
+          <p>{transcript}</p>
+        </div>
+      )}
+
+      {loading && (
+        <div className="text-container">
+          <p>Translating...</p>
+        </div>
+      )}
+      
+      {!loading && translated && (
+        <div className="text-container">
+          <h3>Spanish Translation:</h3>
+          <p>{translated}</p>
+        </div>
+      )}
     </div>
   );
 };
